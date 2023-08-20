@@ -1,6 +1,32 @@
-import Image from "next/image";
+import styles from "./CurrencyItem.module.css";
 
-function CurrencyItem(props: { name: string; src: string; ratio: number }) {
+const currencyColors = [
+  styles.color1,
+  styles.color2,
+  styles.color3,
+  styles.color4,
+  styles.color5,
+  styles.color6,
+  styles.color7,
+  styles.color8,
+  styles.color9,
+];
+
+function getRandom(array: string[]) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function CurrencyItem(props: {
+  name: string;
+  symbol: string | undefined;
+  ratio: number | null;
+}) {
+  let thisSymbol;
+  if (props.symbol == undefined) {
+    thisSymbol = "--";
+  } else {
+    thisSymbol = props.symbol;
+  }
   return (
     <div className="h-16 md:h-24 lg:h-28 xl:h-32 2xl:h-36">
       <div
@@ -11,8 +37,13 @@ function CurrencyItem(props: { name: string; src: string; ratio: number }) {
       pr-10 md:pr-16 lg:pr-20 xl:pr-24
       items-center justify-start gap-[30px]"
       >
-        <div className="relative min-w-max min-h-full w-8 h-8 md:w-14 md:h-14 lg:w-20 lg:h-20 shrink-0">
-          <Image alt="" src={props.src} fill />
+        <div
+          className={`relative w-8 h-8 md:w-14 md:h-14 lg:w-20 lg:h-20 shrink-0 rounded-md lg:rounded-lg
+        flex justify-center items-center ${getRandom(currencyColors)}`}
+        >
+          <div className="max-w-full text-[12px] md:text-[15px] lg:text-[18px] xl:text-[22px] 2xl:text-[25px]">
+            {thisSymbol}
+          </div>
         </div>
 
         <div className="max-w-[70%] flex flex-col">

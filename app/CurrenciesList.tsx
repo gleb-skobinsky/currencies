@@ -1,19 +1,54 @@
+"use client";
+
 import QuotationsHeader from "./QuotationsHeader";
 import LastUpdate from "./LastUpdate";
 import CurrencyItem from "./CurrencyItem";
+import getSymbolFromCurrency from "currency-symbol-map";
+import React, { useState, useEffect } from "react";
+
+class Currency {
+  code: string;
+  symbol: string | undefined;
+  name: string;
+  ratio: number | null;
+
+  constructor(code: string, name: string, ratio: number | null = null) {
+    this.code = code;
+    this.name = name;
+    this.ratio = ratio;
+    this.symbol = getSymbolFromCurrency(this.code);
+  }
+}
+
+interface CurrencyApi {
+  code: string;
+  name: string;
+}
 
 function CurrenciesList() {
-  const currencies = [
-    { name: "Trade dollar", src: "/dollar-icon.svg", ratio: 5.13 },
-    { name: "Argentine Peso", src: "/peso-argentino-icon.svg", ratio: 0.02 },
-    { name: "Yen", src: "/yen-icon.svg", ratio: 0.03 },
-    { name: "Canadian dollar", src: "/canadian-dollar-icon.svg", ratio: 3.78 },
-    { name: "Australian dollar", src: "/australian-icon.svg", ratio: 3.48 },
-    { name: "Yuan", src: "/won-icon.svg", ratio: 0.03 },
-    { name: "Euro", src: "/euro-icon.svg", ratio: 5.43 },
-    { name: "Bitcoin", src: "/bitcoin-icon.svg", ratio: 122148.71 },
-    { name: "Pound", src: "/libra-icon.svg", ratio: 6.16 },
-  ];
+  const [currencies, setCurrencies] = useState<Currency[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          "https://openexchangerates.org/api/currencies.json"
+        );
+        const data = await response.json();
+
+        const currencyList = Object.entries(data).map(([code, name]) => {
+          return new Currency(code, name as string); // You might want to provide the correct src
+        });
+
+        setCurrencies(currencyList);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   return (
     <div>
       <LastUpdate />
@@ -25,7 +60,7 @@ function CurrenciesList() {
               <div key={index}>
                 <CurrencyItem
                   name={item.name}
-                  src={item.src}
+                  symbol={item.symbol}
                   ratio={item.ratio}
                 />
               </div>
