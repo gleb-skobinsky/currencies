@@ -8,7 +8,7 @@ export function Splash() {
         <div className="flex-col">
           <div
             className={
-              "flex flex-col text-center md:text-right lg:text-right xl:text-right 2xl:text-right text-[40px] lg:text-[60px] xl:text-[80px] 2xl:text-[90px] " +
+              "flex flex-col text-center md:text-right lg:text-right xl:text-right 2xl:text-right text-[40px] lg:text-[60px] xl:text-[80px] 2xl:text-[90px] pt-8 " +
               styles.textgradient +
               " " +
               styles.headerDropShadow
@@ -20,7 +20,7 @@ export function Splash() {
           <div className="flex justify-center md:justify-end lg:justify-end xl:justify-end 2xl:justify-end">
             <div
               className={
-                "leading-6 lg:leading-8 xl:leading-10 2xl:leading-10 font-light pb-[5%] text-[12px] md:text-[15px] lg:text-[18px] xl:text-[22px] 2xl:text-[25px] " +
+                "leading-6 lg:leading-8 xl:leading-10 2xl:leading-10 font-light pb-[14%] text-[12px] md:text-[15px] lg:text-[18px] xl:text-[22px] 2xl:text-[25px] " +
                 styles.headerDropShadow
               }
             >
