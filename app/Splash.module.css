@@ -1,0 +1,12 @@
+.textgradient {
+  background: linear-gradient(92deg, #00ce2c 0%, #aedf23 49.26%, #a3dc00 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.headerDropShadow {
+  filter: drop-shadow(
+    0px 3.1635282039642334px 3.1635282039642334px rgba(0, 0, 0, 0.5)
+  );
+}
