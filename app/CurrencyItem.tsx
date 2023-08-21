@@ -57,7 +57,7 @@ function CurrencyItem(props: {
             className="font-light inline-block [color:#A7B2C3]
             text-[12px] md:text-[16px] lg:text-[20px] xl:text-[26px] 2xl:text-[32px]"
           >
-            R$ {props.ratio}
+            Against USD: {props.ratio}
           </div>
         </div>
       </div>

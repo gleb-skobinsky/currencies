@@ -20,13 +20,9 @@ class Currency {
   }
 }
 
-interface CurrencyApi {
-  code: string;
-  name: string;
-}
-
 function CurrenciesList() {
   const [currencies, setCurrencies] = useState<Currency[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -37,10 +33,11 @@ function CurrenciesList() {
         const data = await response.json();
 
         const currencyList = Object.entries(data).map(([code, name]) => {
-          return new Currency(code, name as string); // You might want to provide the correct src
+          return new Currency(code, name as string);
         });
 
         setCurrencies(currencyList);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -48,6 +45,29 @@ function CurrenciesList() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    async function fetchRatios() {
+      try {
+        const fetchPromises = currencies.map(async (currency) => {
+          const response = await fetch(
+            `https://api.exchangerate.host/latest?base=${currency.code}&symbols=USD`
+          );
+          const data = await response.json();
+          currency.ratio = data.rates.USD;
+        });
+
+        await Promise.all(fetchPromises);
+        setCurrencies([...currencies]);
+      } catch (error) {
+        console.error("Error fetching ratio:", error);
+      }
+    }
+
+    if (!loading) {
+      fetchRatios();
+    }
+  }, [loading]);
 
   return (
     <div>
@@ -74,3 +94,25 @@ function CurrenciesList() {
 }
 
 export default CurrenciesList;
+
+/**
+ * async function getForCode(code: string, index: number) {
+    try {
+      const response = await fetch(
+        `https://api.exchangerate.host/latest?base=${code}&symbols=USD`
+      );
+      const data = await response.json();
+      currencies[index].ratio = data["rates"]["USD"];
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  function populateRatios() {
+    console.log(currencies.length);
+    currencies.map((currency, index) => {
+      getForCode(currency.code, index);
+    });
+  }
+  populateRatios();
+ */
